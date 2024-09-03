@@ -1,0 +1,700 @@
+
+
+// TEK SAYFA TASARIMI
+
+package com.yusufkutluay.yemeksepeti_bootcamp.uix.views.homepage
+
+import android.app.Activity
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.yusufkutluay.yemeksepeti_bootcamp.R
+import com.yusufkutluay.yemeksepeti_bootcamp.data.entity.CampaignsSection
+import com.yusufkutluay.yemeksepeti_bootcamp.data.entity.DiscoverSection
+import com.yusufkutluay.yemeksepeti_bootcamp.data.entity.KitchenSection
+import com.yusufkutluay.yemeksepeti_bootcamp.data.entity.PopulerBrandsSection
+import com.yusufkutluay.yemeksepeti_bootcamp.data.entity.PopulerRestaurantsSection
+import com.yusufkutluay.yemeksepeti_bootcamp.ui.theme.TopBarColor
+import com.yusufkutluay.yemeksepeti_bootcamp.uix.viewmodel.HomePageViewModel
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomePage(homePageViewModel: HomePageViewModel){
+
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val screenHeight = configuration.screenHeightDp
+    val kitchenSection = homePageViewModel.kitchenSection.observeAsState(listOf())
+    val campaignsSection = homePageViewModel.campaignsSection.observeAsState(listOf())
+    val populerBrandsSection = homePageViewModel.populerBrandsSection.observeAsState(listOf())
+    val populerRestaurantsSection = homePageViewModel.populerRestaurantsSection.observeAsState(listOf())
+    val discoverSection = homePageViewModel.discoverSection.observeAsState(listOf())
+
+    val activity = (LocalContext.current as Activity)
+
+    LaunchedEffect(key1 = true) {
+        homePageViewModel.kitchenSectionData()
+        homePageViewModel.campaignsSectionData()
+        homePageViewModel.populerBrandsSectionData()
+        homePageViewModel.populerRestaurantsSectionData()
+        homePageViewModel.discoverSectionData()
+    }
+
+    Scaffold (
+        topBar = {
+            TopAppBar(
+                modifier = Modifier.fillMaxWidth(),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = TopBarColor
+                ),
+                title = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_menu_24),
+                                contentDescription = "",
+                                tint = Color.White
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+                            Text(
+                                text = "Gençosman Şht. Onbaşı M. Şengöz Sok. Güngören",
+                                fontSize = 15.sp,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = 15.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis //...
+                            )
+                            Text(
+                                text = "Güngören İstanbul 34165",
+                                fontSize = 13.sp,
+                                color = Color.White,
+                                lineHeight = 15.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                },
+
+                actions = {
+                    Spacer(modifier = Modifier.width(20.dp))
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.shopping_basket_24px),
+                            contentDescription = "",
+                            tint = Color.White
+                        )
+                    }
+                }
+            )
+        }
+    ){ paddingValues ->
+
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+        ){
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .background(TopBarColor)) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(55.dp)
+                        .padding(start = 20.dp, end = 20.dp, bottom = 15.dp),
+
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(30.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                    onClick = {
+                    }
+                ) {
+                    Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(id = R.drawable.search),
+                            contentDescription = "",
+                            Modifier
+                                .size(40.dp)
+                                .padding(start = 15.dp)
+                        )
+                        Text(
+                            text = "Restoran veya mağaza arayın",
+                            modifier = Modifier.padding(start = 10.dp),
+                            textAlign = TextAlign.Center,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                        )
+                    }
+
+                }
+            }
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    RowSection(activity,screenWidth, screenHeight)
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(20.dp)
+                    )
+
+                    GridCampaignsSection(activity,campaignsSection.value)
+
+                    GridMutfakSection(activity,kitchenSection.value)
+
+                    GridPopulerBrandsSection(activity,populerBrandsSection.value)
+
+                    GridPopulerRestorantsSection(activity,populerRestaurantsSection.value)
+
+                    GridDiscoverSection(activity,discoverSection.value)
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun RowSection(activity: Activity,screenWidth : Int, screenHeight : Int){
+    Column(
+        modifier = Modifier
+            .background(Color(0x79D3D3D3))
+            .fillMaxWidth()
+            .padding(top = 10.dp, bottom = 10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row {
+            Column {
+                CardSection(
+                    width = screenWidth / 2.1,
+                    height = screenHeight / 5.0,
+                    title = "Mahalle",
+                    subtitle = "İlk 3 siparişe 180₺ İndirim",
+                    image = "mahalle",
+                    activity = activity
+                )
+                CardSection(
+                    width = screenWidth / 2.1,
+                    height = screenHeight / 5.0,
+                    title = "Market",
+                    subtitle = "Yüzlerce Üründe İndirim",
+                    image = "market",
+                    activity = activity
+                )
+            }
+            Column {
+                CardSection(
+                    width = screenWidth / 2.1,
+                    height = screenHeight / 3.7,
+                    title = "Yemek",
+                    subtitle = "İndirimli Lezzetler",
+                    image = "yemek",
+                    activity = activity
+                )
+                CardSection(
+                    width = screenWidth / 2.1,
+                    height = screenHeight / 8.0,
+                    title = "Gel Al",
+                    subtitle = "%50'ye varan indirim",
+                    image = "",
+                    activity = activity
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CardSection(width: Double, height: Double, title: String, subtitle: String,image: String,activity: Activity) {
+    Card(
+        modifier = Modifier
+            .width(width.dp)
+            .height(height.dp)
+            .padding(all = 5.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        onClick = {  }
+    ) {
+        Column(Modifier.padding(all = 15.dp)) {
+            Text(text = title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text(text = subtitle, fontSize = 11.sp)
+        }
+        if (image != ""){
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp)
+            ) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    )
+                ) {
+                    Image(
+                        bitmap = ImageBitmap.imageResource(id = activity.resources.getIdentifier(image,"drawable",activity.packageName)),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .fillMaxHeight(),
+                        contentScale = ContentScale.Fit
+                    )
+                }
+
+            }
+        }
+
+    }
+}
+
+@Composable
+fun GridMutfakSection(activity: Activity, kitchenSectionList: List<KitchenSection>){
+
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, top = 10.dp, bottom = 10.dp),
+        text = "Mutfak",
+        fontWeight = FontWeight.Bold,
+        fontSize = 17.sp
+    )
+
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(count = 2),
+        modifier = Modifier.height(270.dp),
+        verticalArrangement = Arrangement.Center
+    ) {
+        items(
+            count = kitchenSectionList.count(),
+            itemContent = {
+
+                val kitchen = kitchenSectionList[it]
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Column (modifier = Modifier
+                        .padding(all = 8.dp)
+                        .clickable { }
+                        .size(80.dp, 500.dp)
+                    ){
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(80.dp)
+                        ) {
+                            Image(
+                                bitmap = ImageBitmap.imageResource(
+                                    id = activity.resources.getIdentifier(kitchen.image, "drawable", activity.packageName)
+                                ),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = kitchen.productName,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center,
+                            lineHeight = 15.sp,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                }
+
+            }
+        )
+    }
+}
+
+
+@Composable
+fun GridCampaignsSection(activity: Activity, campaignsSection: List<CampaignsSection>){
+
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, top = 10.dp, bottom = 8.dp),
+        text = "Kampanyalar",
+        fontWeight = FontWeight.Bold,
+        fontSize = 17.sp
+    )
+
+    LazyHorizontalGrid(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp),
+        rows = GridCells.Fixed(count = 1)
+    ) {
+
+        items(
+            count = campaignsSection.count(),
+            itemContent = {
+                val campaigns = campaignsSection[it]
+                Column(modifier = Modifier.padding(all = 10.dp)) {
+                    Card(
+                        onClick = {
+
+                        },
+                        modifier = Modifier.size(130.dp,140.dp)
+                    ) {
+                        Image(
+                            bitmap = ImageBitmap.imageResource(
+                                id = activity.resources.getIdentifier(campaigns.image, "drawable", activity.packageName)
+                            ),
+                            contentDescription = null,
+                            contentScale = ContentScale.FillBounds
+                        )
+                    }
+                }
+            }
+        )
+    }
+
+}
+
+@Composable
+fun GridPopulerBrandsSection(activity: Activity,populerBrandsSection: List<PopulerBrandsSection>){
+
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, top = 10.dp, bottom = 8.dp),
+        text = "Popüler Markalar",
+        fontWeight = FontWeight.Bold,
+        fontSize = 17.sp
+    )
+
+    LazyRow(
+        modifier = Modifier
+            .height(150.dp)
+            .fillMaxWidth()
+    ) {
+        items(
+            count = populerBrandsSection.count(),
+            itemContent = {
+
+                val populerBrands = populerBrandsSection[it]
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .size(85.dp, 140.dp)
+                            .clickable { }
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(85.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color.LightGray
+                            )
+                        ) {
+                            Image(bitmap = ImageBitmap.imageResource(
+                                id = activity.resources.getIdentifier(populerBrands.brandImage, "drawable", activity.packageName)
+                            ),
+                                contentDescription = "",
+                                contentScale = ContentScale.FillHeight,
+                                modifier = Modifier.fillMaxSize()
+                                )
+                        }
+
+                        Text(
+                            text = populerBrands.brandName,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center,
+                            lineHeight = 15.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 5.dp)
+                            )
+
+                        Text(
+                            text = populerBrands.brandDistanceTime,
+                            fontSize = 10.sp,
+                            textAlign = TextAlign.Center,
+                            lineHeight = 15.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 3.dp)
+                        )
+                    }
+                }
+
+            }
+        )
+    }
+
+}
+
+@Composable
+fun GridPopulerRestorantsSection(activity: Activity,populerRestaurantsSection : List<PopulerRestaurantsSection>){
+
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
+        text = "Popüler restoranlar",
+        fontWeight = FontWeight.Bold,
+        fontSize = 17.sp
+    )
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(230.dp)
+    ) {
+        items(
+            count = populerRestaurantsSection.count(),
+            itemContent = {
+
+                val populerRestaurant = populerRestaurantsSection[it]
+
+                Column(
+                    Modifier
+                        .size(250.dp, 245.dp)
+                        .padding(all = 8.dp)
+                        .clickable { }
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(140.dp)
+                    ){
+                        Card(
+                            modifier = Modifier
+                            .fillMaxSize()
+                        ){
+                            Image(bitmap = ImageBitmap.imageResource(id = activity.resources.getIdentifier(populerRestaurant.image,"drawable",activity.packageName)),
+                                contentDescription = "",
+                                contentScale = ContentScale.FillBounds,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                        Column {
+                            Spacer(modifier = Modifier.height(12.dp))
+                            if (populerRestaurant.imageExplanation1 != ""){
+                                Text(
+                                    text = "  ${populerRestaurant.imageExplanation1}  ",
+                                    fontSize = 11.sp,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier
+                                        .clip(
+                                            RoundedCornerShape(
+                                                topStart = 0.dp,
+                                                bottomStart = 0.dp,
+                                                topEnd = 7.dp,
+                                                bottomEnd = 7.dp
+                                            )
+                                        )
+                                        .background(TopBarColor)
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(3.dp))
+                            if (populerRestaurant.imageExplanation2 != ""){
+                                Text(
+                                    text = "  ${populerRestaurant.imageExplanation2}  ",
+                                    fontSize = 11.sp,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier
+                                        .clip(
+                                            RoundedCornerShape(
+                                                topStart = 0.dp,
+                                                bottomStart = 0.dp,
+                                                topEnd = 7.dp,
+                                                bottomEnd = 7.dp
+                                            )
+                                        )
+                                        .background(TopBarColor)
+                                )
+                            }
+                        }
+                    }
+
+
+                    Row (
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = 5.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Text(
+                            text = populerRestaurant.restorantName,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Row (verticalAlignment = Alignment.CenterVertically){
+                            Icon(
+                                painter = painterResource(id = R.drawable.star),
+                                contentDescription = "",
+                                tint = TopBarColor,
+                                modifier = Modifier.size(17.dp,17.dp)
+                            )
+                            Text(
+                                text = populerRestaurant.favRatio,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = populerRestaurant.favRatioTotal,
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+
+                    Text(
+                        text = populerRestaurant.minPriceExplanation,
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(painter = painterResource(id = R.drawable.time), contentDescription = "",Modifier.size(16.dp,15.dp))
+                        Text(
+                            text = "${populerRestaurant.timeExplanation}▫️",
+                            fontSize = 12.sp,
+                            lineHeight = 1.sp,
+                            modifier = Modifier.padding(start = 2.dp)
+                        )
+                        Icon(painter = painterResource(id = R.drawable.bike), contentDescription = "", tint = TopBarColor, modifier = Modifier.size(15.dp,14.dp))
+                        Text(
+                            text = "Ücretsiz Teslimat",
+                            fontSize = 12.sp, color = TopBarColor,
+                            fontWeight = FontWeight.Bold,
+                            lineHeight = 1.sp,
+                            modifier = Modifier.padding(start = 2.dp))
+                    }
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun GridDiscoverSection(activity: Activity,discoverSection: List<DiscoverSection>){
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
+        text = "Yemek Sepeti Mahalle'yi keşfet",
+        fontWeight = FontWeight.Bold,
+        fontSize = 17.sp
+    )
+
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(130.dp)
+    ) {
+        items(
+            count = discoverSection.count(),
+            itemContent = {
+                val discover = discoverSection[it]
+
+                Column(
+                    modifier = Modifier
+                        .size(90.dp, 120.dp)
+                        .padding(all = 8.dp)
+                        .clickable { },
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(70.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = discover.colorDiscoverCard
+                        )
+                    ) {
+                        Image(
+                            bitmap = ImageBitmap
+                                .imageResource(
+                                    id = activity.resources.getIdentifier(discover.imageDiscover,
+                                    "drawable",activity.packageName
+                                )),
+                            contentScale = ContentScale.FillBounds,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(all = 12.dp)
+                        )
+                    }
+                    Text(
+                        text = discover.nameDiscover,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 5.dp)
+                    )
+                }
+            }
+        )
+    }
+}
